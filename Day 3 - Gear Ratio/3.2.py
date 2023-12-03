@@ -12,12 +12,10 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int, numbe
 
     # check if symbol is in the upper or bottom row
     for j in upper_bottom_cols:
-        if row != 0:
-            if matrix[row-1][j] == "*":
-                gears[f"{row-1},{j}"].append(number)
-        if row != len(matrix) - 1:
-            if matrix[row+1][j] == "*":
-                gears[f"{row+1},{j}"].append(number)
+        if row != 0 and matrix[row-1][j] == "*":
+            gears[f"{row-1},{j}"].append(number)
+        if row != len(matrix) - 1 and matrix[row+1][j] == "*":
+            gears[f"{row+1},{j}"].append(number)
 
 
 def process_row(matrix: list, gears: dict, i: int):

@@ -1,5 +1,3 @@
-import re
-
 
 def fill_game_color_dict(set_cube: str, color_dict: dict[str, list]):
     cubes = set_cube.split(",")
@@ -26,8 +24,6 @@ if __name__ == "__main__":
     with open("input.txt", "r") as f:
         cube_games = f.readlines()
 
-    min_cubes_mult_sum = 0
-    for g in cube_games:
-        min_cubes_mult_sum += get_game_mult(g)
+    min_cubes_mult_sum = sum(get_game_mult(g) for g in cube_games)
     print(min_cubes_mult_sum)
 

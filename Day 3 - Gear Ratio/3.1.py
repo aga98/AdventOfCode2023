@@ -13,12 +13,10 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int) -> bo
 
     # check if symbol is in the upper or bottom row
     for j in upper_bottom_cols:
-        if row != 0:
-            if matrix[row-1][j] in symbols:
-                return True
-        if row != len(matrix) - 1:
-            if matrix[row+1][j] in symbols:
-                return True
+        if row != 0 and matrix[row-1][j] in symbols:
+            return True
+        if row != len(matrix) - 1 and matrix[row+1][j] in symbols:
+            return True
     return False
 
 
@@ -37,9 +35,7 @@ def process_row(matrix, i: int) -> int:
 
 
 def process_matrix(matrix):
-    result = 0
-    for i, row in enumerate(matrix):
-        result += process_row(matrix, i)
+    result = sum(process_row(matrix, i) for i, row in enumerate(matrix))
     print(result)
 
 

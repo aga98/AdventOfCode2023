@@ -32,9 +32,7 @@ if __name__ == "__main__":
     with open("./input.txt", "r") as f:
         cube_games = f.readlines()
 
-    id_sum = 0
-    for g in cube_games:
-        id_sum += get_game_id_if_valid(g)
+    id_sum = sum(get_game_id_if_valid(g) for g in cube_games)
     print(id_sum)
 
 
