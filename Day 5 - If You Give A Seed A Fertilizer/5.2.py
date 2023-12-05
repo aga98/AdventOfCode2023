@@ -1,25 +1,25 @@
 import re
+from utils import read_input
 
 
 def line_to_list(line, same_line: bool = False) -> list:
     if same_line:
-        return [int(num) for num in line.replace("\n", "").split(":")[1].strip().split(" ")]
+        return [int(num) for num in line.split(":")[1].strip().split(" ")]
     else:
-        return [int(num) for num in line.replace("\n", "").strip().split(" ")]
+        return [int(num) for num in line.strip().split(" ")]
 
 
-def read_input():
-    with open("./input.txt", "r") as f:
-        lines = f.readlines()
-
+def process_input(lines: list):
     input_dict = {}
     seeds = []
     current_map = None
     for line in lines:
         if line.startswith("seeds:"):
             seed_list = line_to_list(line, same_line=True)
-            for i in range(0, len(seed_list), 2):
-                seeds.append((seed_list[i], seed_list[i+1]))
+            seeds.extend(
+                (seed_list[i], seed_list[i + 1])
+                for i in range(0, len(seed_list), 2)
+            )
         elif re.match(r"^[a-zA-Z]", line):
             current_map = line.split()[0]
             input_dict[current_map] = []
@@ -68,5 +68,6 @@ def find_seed_from_locations(mapping: dict, seeds: list):
 
 
 if __name__ == "__main__":
-    seed_list, input_map = read_input()
+    problem_input = read_input()
+    seed_list, input_map = process_input(problem_input)
     find_seed_from_locations(input_map, seed_list)

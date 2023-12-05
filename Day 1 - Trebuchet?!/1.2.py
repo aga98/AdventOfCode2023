@@ -1,4 +1,5 @@
 import re
+from utils import read_input
 
 
 NUMBER = {
@@ -24,7 +25,6 @@ def word_2_number_v2(s: str) -> int:
 
 
 if __name__ == "__main__":
-    with open("./input.txt", "r") as f:
-        words = f.readlines()
-    calibration_sum = sum(word_2_number_v2(word.replace("\n", "")) for word in words)
+    words = read_input()
+    calibration_sum = sum(word_2_number_v2(word) for word in words)
     print(f"CALIBRATION NUMBER: {calibration_sum}")

@@ -1,4 +1,5 @@
 import re
+from utils import read_input
 
 
 def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int) -> bool:
@@ -7,7 +8,7 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int) -> bo
 
     if (  # check if symbol is in the same row (left or right)
         (col_start != 0 and matrix[row][col_start-1] in symbols)
-        or (col_end != len(matrix[row]) and matrix[row][col_end+1] in symbols)
+        or (col_end + 1 != len(matrix[row]) and matrix[row][col_end+1] in symbols)
     ):
         return True
 
@@ -21,8 +22,7 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int) -> bo
 
 
 def process_row(matrix, i: int) -> int:
-    row = matrix[i][:-1] if matrix[i][-1] == "\n" else matrix[i]
-    findings = re.finditer(r"\d+", "".join(row))
+    findings = re.finditer(r"\d+", "".join(matrix[i]))
     row_sum = 0
     for match in findings:
         col_start = match.start()
@@ -40,7 +40,5 @@ def process_matrix(matrix):
 
 
 if __name__ == "__main__":
-    with open("input.txt", "r") as f:
-        mat = f.readlines()
+    mat = read_input()
     process_matrix(mat)
-

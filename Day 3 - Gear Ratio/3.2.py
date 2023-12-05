@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from utils import read_input
 
 
 def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int, number: str, gears: dict):
@@ -7,7 +8,7 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int, numbe
 
     if col_start != 0 and matrix[row][col_start-1] == "*":
         gears[f"{row},{col_start-1}"].append(number)
-    if col_end != len(matrix[row]) and matrix[row][col_end+1] == "*":
+    if col_end + 1 != len(matrix[row]) and matrix[row][col_end+1] == "*":
         gears[f"{row},{col_end+1}"].append(number)
 
     # check if symbol is in the upper or bottom row
@@ -19,8 +20,7 @@ def symbol_in_surroundings(matrix, row: int, col_start: int, col_end: int, numbe
 
 
 def process_row(matrix: list, gears: dict, i: int):
-    row = matrix[i][:-1] if matrix[i][-1] == "\n" else matrix[i]
-    findings = re.finditer(r"\d+", "".join(row))
+    findings = re.finditer(r"\d+", "".join(matrix[i]))
     for match in findings:
         col_start = match.start()
         col_end = match.end() - 1
@@ -37,7 +37,6 @@ def process_matrix(matrix):
 
 
 if __name__ == "__main__":
-    with open("input.txt", "r") as f:
-        mat = f.readlines()
+    mat = read_input()
     process_matrix(mat)
 

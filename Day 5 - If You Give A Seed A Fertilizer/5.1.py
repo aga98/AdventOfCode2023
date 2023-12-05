@@ -1,17 +1,15 @@
 import re
+from utils import read_input
 
 
 def line_to_list(line, same_line: bool = False) -> list:
     if same_line:
-        return [int(num) for num in line.replace("\n", "").split(":")[1].strip().split(" ")]
+        return [int(num) for num in line.split(":")[1].strip().split(" ")]
     else:
-        return [int(num) for num in line.replace("\n", "").strip().split(" ")]
+        return [int(num) for num in line.strip().split(" ")]
 
 
-def read_input():
-    with open("./input_dummy.txt", "r") as f:
-        lines = f.readlines()
-
+def process_input(lines):
     input_dict = {}
     seeds = []
     current_map = None
@@ -52,7 +50,8 @@ def seed_to_location(seed: int, mappings: dict):
 
 
 if __name__ == "__main__":
-    seed_list, input_map = read_input()
+    problem_input = read_input()
+    seed_list, input_map = process_input(problem_input)
     locations = [seed_to_location(s, input_map) for s in seed_list]
     min_location = min(locations)
     print(f"Min location: {min_location}")

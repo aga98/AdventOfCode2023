@@ -1,4 +1,5 @@
 import re
+from utils import read_input
 
 
 color_amounts = {
@@ -29,9 +30,7 @@ def get_game_id_if_valid(game: str) -> int:
 
 
 if __name__ == "__main__":
-    with open("./input.txt", "r") as f:
-        cube_games = f.readlines()
-
+    cube_games = read_input()
     id_sum = sum(get_game_id_if_valid(g) for g in cube_games)
     print(id_sum)
 

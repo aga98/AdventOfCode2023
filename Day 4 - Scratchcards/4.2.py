@@ -1,4 +1,5 @@
 import re
+from utils import read_input
 
 
 def calculate_number_of_matches(winner_numbers: list, card_numbers: list) -> int:
@@ -17,11 +18,10 @@ def get_number_of_scratchcards(scratchcard_amounts: dict, card: str):
 
 
 if __name__ == "__main__":
-    with open("./input.txt", "r") as f:
-        scratchcards = f.readlines()
-        scratchcard_amounts = {k: 1 for k in range(1, len(scratchcards) + 1)}
-        for scratchcard in scratchcards:
-            get_number_of_scratchcards(scratchcard_amounts, scratchcard)
-        total_scratchcards = sum(scratchcard_amounts.values())
-        print(scratchcard_amounts)
-        print(total_scratchcards)
+    scratchcards = read_input()
+    scratchcard_amounts = {k: 1 for k in range(1, len(scratchcards) + 1)}
+    for scratchcard in scratchcards:
+        get_number_of_scratchcards(scratchcard_amounts, scratchcard)
+    total_scratchcards = sum(scratchcard_amounts.values())
+    print(scratchcard_amounts)
+    print(total_scratchcards)

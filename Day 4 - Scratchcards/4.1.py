@@ -1,3 +1,5 @@
+from utils import read_input
+
 
 def calculate_number_of_matches(winner_numbers: list, card_numbers: list) -> int:
     return sum(1 for num in card_numbers if num in winner_numbers)
@@ -26,8 +28,6 @@ def get_scratchcard_points(card: str) -> int:
 
 
 if __name__ == "__main__":
-    with open("./input.txt", "r") as f:
-        scratchcards = f.readlines()
-
+    scratchcards = read_input()
     pile_points = sum(get_scratchcard_points(c) for c in scratchcards)
     print(pile_points)
