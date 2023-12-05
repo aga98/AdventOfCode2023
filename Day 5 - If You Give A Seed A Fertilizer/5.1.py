@@ -28,11 +28,14 @@ def read_input():
 
 
 def source_to_destination(value: int, mapping_list: list):
-    for map_dest, map_source, length in mapping_list:
-        if map_source <= value <= map_source + length:
-            offset = value - map_source
-            return map_dest + offset
-    return value
+    return next(
+        (
+            map_dest + (value - map_source)
+            for map_dest, map_source, length in mapping_list
+            if map_source <= value <= map_source + length
+        ),
+        value,
+    )
 
 
 def seed_to_location(seed: int, mappings: dict):
