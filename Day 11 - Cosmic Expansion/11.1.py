@@ -13,14 +13,12 @@ def expand_galaxies(galaxies: list[list[str]], rows_to_expand: list, cols_to_exp
     return galaxies
 
 
-def get_galaxies_coordinates(galaxies: list[list[str]]) -> dict[str, list[tuple[int, int]]]:
+def get_galaxies_coordinates(galaxies: list[list[str]]) -> dict[str, tuple[int, int]]:
     galaxies_coordinates = {}
     for i, row in enumerate(galaxies):
         for j, pixel in enumerate(row):
             if pixel != ".":
-                if pixel not in galaxies_coordinates:
-                    galaxies_coordinates[pixel] = []
-                galaxies_coordinates[pixel].append((i, j))
+                galaxies_coordinates[pixel] = (i, j)
     return galaxies_coordinates
 
 
@@ -28,6 +26,6 @@ if __name__ == "__main__":
     image, expand_rows, expand_cols = process_input(read_input(load_dummy=False))
     image = expand_galaxies(image, expand_rows, expand_cols)
     coordinates = get_galaxies_coordinates(image)
-    distances = calculate_pair_distances(image, coordinates)
+    distances = calculate_pair_distances(coordinates)
     distances_sum = sum(sum(distances[galaxy].values()) for galaxy in distances)
     print(f"Sum of distances: {int(distances_sum / 2)}")  # divide by 2 because we are counting each pair twice

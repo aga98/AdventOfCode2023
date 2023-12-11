@@ -16,17 +16,13 @@ def process_input(img: list[list[str]]) -> (list[list[str]], list[int], list[int
     return galaxies, rows_to_expand, cols_to_expand
 
 
-def calculate_pair_distances(
-        galaxies: list[list[str]], galaxy_coordinates: dict[str, list[tuple[int, int]]]
-) -> dict[str, dict[str, int]]:
+def calculate_pair_distances(galaxy_coordinates: dict[str, tuple[int, int]]) -> dict[str, dict[str, int]]:
     pair_distances = {}
     for galaxy, coordinates in galaxy_coordinates.items():
         pair_distances[galaxy] = {}
         for other_galaxy, other_coordinates in galaxy_coordinates.items():
             if galaxy != other_galaxy:
-                pair_distances[galaxy][other_galaxy] = min(
-                    abs(x1 - x2) + abs(y1 - y2)
-                    for x1, y1 in coordinates
-                    for x2, y2 in other_coordinates
-                )
+                x1, y1 = coordinates
+                x2, y2 = other_coordinates
+                pair_distances[galaxy][other_galaxy] = abs(x1 - x2) + abs(y1 - y2)
     return pair_distances
