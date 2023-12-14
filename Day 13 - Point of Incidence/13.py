@@ -1,32 +1,5 @@
 from utils import read_input
-
-
-def process_input(lines: list[str]) -> list[list[str]]:
-    valley_list = [[]]
-    num_valley = 0
-    for line in lines:
-        if line != "":
-            valley_list[num_valley].append(line)
-        else:
-            valley_list.append([])
-            num_valley += 1
-    return valley_list
-
-
-def check_reflections(reflection_line: int, valley: list[str]) -> int:
-    """
-    Validate it is actually a reflection line
-    """
-    l = reflection_line
-    r = reflection_line + 1
-    matches = 0
-    while l >= 0 and r < len(valley):
-        if valley[l] != valley[r]:
-            return False
-        matches += 1
-        l -= 1
-        r += 1
-    return True
+from common import process_input, check_reflections
 
 
 def get_reflection_line(valley: list[str]) -> int | None:
@@ -37,7 +10,7 @@ def get_reflection_line(valley: list[str]) -> int | None:
         else:
             counts[row] = [index]
 
-    # the diagonal will be the row where the count has at least two elements and contains i and i+1
+    # the line will be the row where the count has at least two elements and contains i and i+1
     reflection_candidates = [row for row in counts if len(counts[row]) >= 2]
     for row in reflection_candidates:
         for i in range(len(counts[row]) - 1):
