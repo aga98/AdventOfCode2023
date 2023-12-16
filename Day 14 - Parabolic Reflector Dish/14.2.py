@@ -1,5 +1,3 @@
-from typing import List
-
 from utils import read_input
 from common import process_input, calculate_load, check_for_rock_and_move
 
@@ -36,12 +34,9 @@ def tilt(platform: list[list[str]], direction: str) -> list[tuple[int, int]]:
 
 def generate_loop(locations_history: list[list[tuple[int, int]]], index: int, cycles: int) -> list[tuple[int, int]]:
     loop = locations_history[index:]
-    current_cycle = len(locations_history)
-    loop_length = len(loop)
-    index_final_location = (cycles - current_cycle) % loop_length
-    times = cycles // loop_length
-    final_list = locations_history[:index] + loop*times
-    return final_list[cycles]
+    loop_length = len(loop) + 1
+    index_final_location = loop_length - (cycles % loop_length + index % loop_length) - 1
+    return loop[index_final_location]
 
     
 def cycle(cycles: int, platform: list[list[str]]) -> list[tuple[int, int]]:
