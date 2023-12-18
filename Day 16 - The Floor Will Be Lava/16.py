@@ -62,7 +62,7 @@ class Beam:
 
 
 class Cavern:
-    def __init__(self, cavern: list[list[str]], start_beam: Beam = Beam(0, -1, "E")):
+    def __init__(self, cavern: list[list[str]], start_beam: Beam):
         self.cavern = cavern
         self.beams = [start_beam]
         self.visited_tiles = defaultdict(list)
@@ -98,12 +98,33 @@ class Cavern:
         print()
 
 
-def find_tiles_energized():
-    c = process_input(read_input(load_dummy=False))
-    cavern = Cavern(c)
+def find_tiles_energized(c, start_beam: Beam = Beam(0, -1, "E")):
+    cavern = Cavern(c, start_beam)
     cavern.move_beams()
-    print(f"Part 1 - tiles visited: {len(cavern.visited_tiles)}")
+    return len(cavern.visited_tiles)
     
 
+def find_max_configuration(c):
+    starts = []
+    rows = len(c)
+    cols = len(c[0])
+    for i in range(rows):
+        beam_left = Beam(i, -1, "E")
+        beam_right = Beam(i, cols, "W")
+        starts.append(beam_left)
+        starts.append(beam_right)
+    for j in range(cols):
+        beam_top = Beam(-1, j, "S")
+        beam_bottom = Beam(rows, j, "N")
+        starts.append(beam_top)
+        starts.append(beam_bottom)
+    
+    max_tiles = max(find_tiles_energized(c, start_beam) for start_beam in starts)
+    print(f"Part 2 - Max energized tiles: {max_tiles}")
+
+
 if __name__ == "__main__":
-    find_tiles_energized()
+    buttons = process_input(read_input(load_dummy=False))
+    energized_tiles = find_tiles_energized(buttons)
+    print(f"Part 1 - tiles visited: {energized_tiles}")
+    find_max_configuration(buttons)
