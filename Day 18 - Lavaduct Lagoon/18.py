@@ -8,14 +8,25 @@ DIRECTIONS = {
 }
 
 
-def process_input(lines: list[str]) -> list[tuple[str, int, str]]:
+def process_input(lines: list[str]) -> list[tuple[str, int]]:
     instructions = []
     for line in lines:
         splitted = line.split(" ")
         direction = splitted[0]
         distance = int(splitted[1])
-        color = splitted[2].replace("(", "").replace(")", "")
-        instructions.append((direction, distance, color))
+        instructions.append((direction, distance))
+    return instructions
+
+
+def process_input_part_2(lines: list[str]) -> list[tuple[str, int]]:
+    instructions = []
+    direction_mapping = {"0": "R", "1": "D", "2": "L", "3": "U"}
+    for line in lines:
+        splitted = line.split(" ")
+        color = splitted[2][2:].replace(")", "")
+        distance = int(f"0x{color[:5]}", 16)
+        direction = direction_mapping[color[-1]]
+        instructions.append((direction, distance))
     return instructions
 
 
@@ -25,7 +36,7 @@ def print_matrix(matrix: list[list[str]]):
     print()
 
 
-def build_matrix(dug: set[tuple[int, int]]):
+def build_matrix(dug: list[tuple[int, int]]):
     iss = [i for i, _ in dug]
     min_row, max_row = min(iss), max(iss)
     jss = [j for _, j in dug]
@@ -41,18 +52,19 @@ def build_matrix(dug: set[tuple[int, int]]):
     return final_dug_matrix
 
     
-def dig_edge(instructions: list[tuple[str, int, str]]) -> list[tuple[int, int]]:
+def dig_edge(instructions: list[tuple[str, int]], print_edge: bool = False) -> list[tuple[int, int]]:
     pos = (0, 0)
     dug = [pos]
-    for direction, meters, _ in instructions:
+    for direction, meters in instructions:
         new_pos = pos
         for i in range(1, meters + 1):
             new_pos = (pos[0] + i * DIRECTIONS[direction][0], pos[1] + i * DIRECTIONS[direction][1])
             if new_pos not in dug:
                 dug.append(new_pos)
         pos = new_pos
-    matrix = build_matrix(dug)
-    print_matrix(matrix)
+    if print_edge:
+        matrix = build_matrix(dug)
+        print_matrix(matrix)
     return dug
 
     
@@ -88,9 +100,30 @@ def calculate_inside_points(loop_points: list[tuple[int, int]]):
     return inside + boundary
 
 
-if __name__ == "__main__":
-    plan = process_input(read_input(load_dummy=False))
-    edge = dig_edge(plan)
+def part_1():
+    instructions = process_input(read_input(load_dummy=False))
+    edge = dig_edge(instructions, print_edge=True)
     total_cubes = calculate_inside_points(edge)
-    print("Total cubes:", total_cubes)
+    print("Total cubes (part 1):", total_cubes)
+    
+    
+def part_2():
+    instructions = process_input_part_2(read_input(load_dummy=False))
+    boundary = area = x = y = 0
+    
+    for direction, distance in instructions:
+        boundary += distance
+        vector = DIRECTIONS[direction][1] * distance, DIRECTIONS[direction][0] * distance
+        x += vector[0]
+        y += vector[1]
+        area += x * vector[1]
+        
+    total_cubes = int(area + boundary // 2 + 1)
+    print("Total cubes (part 2):", total_cubes)
+
+
+if __name__ == "__main__":
+    part_1()
+    part_2()
+    
 

@@ -1,100 +1,85 @@
-## --- Day 16: The Floor Will Be Lava ---
+## --- Day 18: Lavaduct Lagoon ---
+Thanks to your efforts, the machine parts factory is one of the first factories up and running since the lavafall came back. However, to catch up with the large backlog of parts requests, the factory will also need a large supply of lava for a while; the Elves have already started creating a large lagoon nearby for this purpose.
 
-With the beam of light completely focused somewhere, the reindeer leads you deeper still into the Lava Production Facility. At some point, you realize that the steel facility walls have been replaced with cave, and the doorways are just cave, and the floor is cave, and you're pretty sure this is actually just a giant cave.
-
-Finally, as you approach what must be the heart of the mountain, you see a bright light in a cavern up ahead. There, you discover that the beam of light you so carefully focused is emerging from the cavern wall closest to the facility and pouring all of its energy into a contraption on the opposite side.
-
-Upon closer inspection, the contraption appears to be a flat, two-dimensional square grid containing empty space (.), mirrors (/ and \), and splitters (| and -).
-
-The contraption is aligned so that most of the beam bounces around the grid, but each tile on the grid converts some of the beam's light into heat to melt the rock in the cavern.
-
-You note the layout of the contraption (your puzzle input). For example:
+However, they aren't sure the lagoon will be big enough; they've asked you to take a look at the dig plan (your puzzle input). For example:
 ````
-.|...\....
-|.-.\.....
-.....|-...
-........|.
-..........
-.........\
-..../.\\..
-.-.-/..|..
-.|....-|.\
-..//.|....
+R 6 (#70c710)
+D 5 (#0dc571)
+L 2 (#5713f0)
+D 2 (#d2c081)
+R 2 (#59c680)
+D 2 (#411b91)
+L 5 (#8ceee2)
+U 2 (#caa173)
+L 1 (#1b58a2)
+U 2 (#caa171)
+R 2 (#7807d2)
+U 3 (#a77fa3)
+L 2 (#015232)
+U 2 (#7a21e3)
 ````
-The beam enters in the top-left corner from the left and heading to the right. Then, its behavior depends on what it encounters as it moves:
+The digger starts in a 1 meter cube hole in the ground. They then dig the specified number of meters up (U), down (D), left (L), or right (R), clearing full 1 meter cubes as they go. The directions are given as seen from above, so if "up" were north, then "right" would be east, and so on. Each trench is also listed with the color that the edge of the trench should be painted as an RGB hexadecimal color code.
 
-- If the beam encounters empty space (.), it continues in the same direction.
-- If the beam encounters a mirror (/ or \), the beam is reflected 90 degrees depending on the angle of the mirror. For instance, a rightward-moving beam that encounters a / mirror would continue upward in the mirror's column, while a rightward-moving beam that encounters a \ mirror would continue downward from the mirror's column.
-- If the beam encounters the pointy end of a splitter (| or -), the beam passes through the splitter as if the splitter were empty space. For instance, a rightward-moving beam that encounters a - splitter would continue in the same direction.
-- If the beam encounters the flat side of a splitter (| or -), the beam is split into two beams going in each of the two directions the splitter's pointy ends are pointing. For instance, a rightward-moving beam that encounters a | splitter would split into two beams: one that continues upward from the splitter's column and one that continues downward from the splitter's column.
-
-Beams do not interact with other beams; a tile can have many beams passing through it at the same time. A tile is energized if that tile has at least one beam pass through it, reflect in it, or split in it.
-
-In the above example, here is how the beam of light bounces around the contraption:
+When viewed from above, the above example dig plan would result in the following loop of trench (#) having been dug out from otherwise ground-level terrain (.):
 ````
->|<<<\....
-|v-.\^....
-.v...|->>>
-.v...v^.|.
-.v...v^...
-.v...v^..\
-.v../2\\..
-<->-/vv|..
-.|<<<2-|.\
-.v//.|.v..
+#######
+#.....#
+###...#
+..#...#
+..#...#
+###.###
+#...#..
+##..###
+.#....#
+.######
 ````
-Beams are only shown on empty tiles; arrows indicate the direction of the beams. If a tile contains beams moving in multiple directions, the number of distinct directions is shown instead. Here is the same diagram but instead only showing whether a tile is energized (#) or not (.):
+At this point, the trench could contain 38 cubic meters of lava. However, this is just the edge of the lagoon; the next step is to dig out the interior so that it is one meter deep as well:
 ````
-######....
-.#...#....
-.#...#####
-.#...##...
-.#...##...
-.#...##...
-.#..####..
-########..
-.#######..
-.#...#.#..
+#######
+#######
+#######
+..#####
+..#####
+#######
+#####..
+#######
+.######
+.######
 ````
-Ultimately, in this example, 46 tiles become energized.
+Now, the lagoon can contain a much more respectable 62 cubic meters of lava. While the interior is dug out, the edges are also painted according to the color codes in the dig plan.
 
-The light isn't energizing enough tiles to produce lava; to debug the contraption, you need to start by analyzing the current situation. With the beam starting in the top-left heading right, how many tiles end up being energized?
+The Elves are concerned the lagoon won't be large enough; if they follow their dig plan, how many cubic meters of lava could it hold?
 
-Your puzzle answer was `7562`.
+Your puzzle answer was `26857`.
 
 ## --- Part Two ---
-As you try to work out what might be wrong, the reindeer tugs on your shirt and leads you to a nearby control panel. There, a collection of buttons lets you align the contraption so that the beam enters from any edge tile and heading away from that edge. (You can choose either of two directions for the beam if it starts on a corner; for instance, if the beam starts in the bottom-right corner, it can start heading either left or upward.)
+The Elves were right to be concerned; the planned lagoon would be much too small.
 
-So, the beam could start on any tile in the top row (heading downward), any tile in the bottom row (heading upward), any tile in the leftmost column (heading right), or any tile in the rightmost column (heading left). To produce lava, you need to find the configuration that energizes as many tiles as possible.
+After a few minutes, someone realizes what happened; someone swapped the color and instruction parameters when producing the dig plan. They don't have time to fix the bug; one of them asks if you can extract the correct instructions from the hexadecimal codes.
 
-In the above example, this can be achieved by starting the beam in the fourth tile from the left in the top row:
-````
-.|<2<\....
-|v-v\^....
-.v.v.|->>>
-.v.v.v^.|.
-.v.v.v^...
-.v.v.v^..\
-.v.v/2\\..
-<-2-/vv|..
-.|<<<2-|.\
-.v//.|.v..
-````
-Using this configuration, 51 tiles are energized:
-````
-.#####....
-.#.#.#....
-.#.#.#####
-.#.#.##...
-.#.#.##...
-.#.#.##...
-.#.#####..
-########..
-.#######..
-.#...#.#..
-````
-Find the initial beam configuration that energizes the largest number of tiles; how many tiles are energized in that configuration?
+Each hexadecimal code is six hexadecimal digits long. The first five hexadecimal digits encode the distance in meters as a five-digit hexadecimal number. The last hexadecimal digit encodes the direction to dig: 0 means R, 1 means D, 2 means L, and 3 means U.
 
-Your puzzle answer was `7793`.
+So, in the above example, the hexadecimal codes can be converted into the true instructions:
+````
+#70c710 = R 461937
+#0dc571 = D 56407
+#5713f0 = R 356671
+#d2c081 = D 863240
+#59c680 = R 367720
+#411b91 = D 266681
+#8ceee2 = L 577262
+#caa173 = U 829975
+#1b58a2 = L 112010
+#caa171 = D 829975
+#7807d2 = L 491645
+#a77fa3 = U 686074
+#015232 = L 5411
+#7a21e3 = U 500254
+````
+Digging out this loop and its interior produces a lagoon that can hold an impressive `952408144115` cubic meters of lava.
+
+Convert the hexadecimal color codes into the correct instructions; if the Elves follow this new dig plan, how many cubic meters of lava could the lagoon hold?
+
+Your puzzle answer was `129373230496292`.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
